@@ -1,3 +1,4 @@
+var people = [];
 class Profile {
     name: string;
     image: string;
@@ -7,50 +8,74 @@ class Profile {
         this.name = name;
         this.image = image;
         this.description = description;
+        people.push(this);
+    }
+    render(){
+      return  `
+      <div class="card p-2">
+      <img class="card-img-top" src="${this.image}" alt="Card image cap">
+      <div class="text-center card-body">
+        <h5 class="card-title">${this.name}</h5>
+        <p class="card-text">${this.description}</p>
+        <a class="btn btn-append bg-light border-danger text-secondary btn-primary">&hearts;</a>
+      </div>
+      </div>
+      `
+    }
+    renderFav(){
+      return `        
+      <div class="bg-danger card p-2">
+      <img class="card-img-top" src="${this.image}" alt="Card image cap">
+      <div class="text-center card-body">
+        <h5 class="card-title">${this.name}</h5>
+        <p class="card-text">${this.description}</p>
+        <a class="btn btn-remove bg-primary border-dark text-secondary btn-primary"> &#10006;</a>
+      </div>
+      </div>`
     }
 }
 
-var person0 = new Profile("Anna", "img/person0.jpg", "placeholder");
-var person1 = new Profile("Anita", "img/person1.jpg", "placeholder");
-var person2 = new Profile("Anota", "img/person2.jpg", "placeholder");
-var person3 = new Profile("Girl4", "img/person3.jpg", "placeholder");
-var person4 = new Profile("Guy1", "img/person4.jpg", "placeholder");
-var person5 = new Profile("Guywithroses", "img/person5.jpg", "placeholder");
-
-var people: Array<any> = [person0, person1, person2, person3, person4, person5];
-person0.favorite = true;
-console.table(people);
+new Profile("Anna", "img/person0.jpg", "placeholder");
+new Profile("Anita", "img/person1.jpg", "placeholder");
+new Profile("Anota", "img/person2.jpg", "placeholder");
+new Profile("Girl4", "img/person3.jpg", "placeholder");
+new Profile("Guy1", "img/person4.jpg", "placeholder");
+new Profile("Guywithroses", "img/person5.jpg", "placeholder");
 
 $(document).ready(function () {
 
     for (let x in people) {
+      let data = people[x].render();
         $("#all").append(`
         <div class='p-5 col-lg-3' id="${x}">
-        <div class="card p-2">
-        <img class="card-img-top" src="${people[x].image}" alt="Card image cap">
-        <div class="text-center card-body">
-          <h5 class="card-title">${people[x].name}</h5>
-          <p class="card-text">${people[x].description}</p>
-          <a class="btn bg-light border-danger text-secondary btn-primary">&hearts;</a>
-        </div>
-        </div>
+        ${data}
       </div>
         `)
     }
 
-    $(`.btn`).one('click', function () {
-        var index = $(this).parent().parent().parent().attr('id');
-        $("#fav").append(`
-        <div class='text-white p-5 col-lg-3'>
-        <div class="bg-danger card p-2">
-        <img class="card-img-top" src="${people[index].image}" alt="Card image cap">
-        <div class="text-center card-body">
-          <h5 class="card-title">${people[index].name}</h5>
-          <p class="card-text">${people[index].description}</p>
+    $(`.btn-append`).on('click', function () {
+        let index = $(this).parent().parent().parent().attr('id');
+        if(people[index].favorite == false)
+        {
+          people[index].favorite = true;
+          let data = people[index].renderFav();
+          $("#fav").append(`
+          <div class='text-white p-5 col-lg-3' number="${index}">
+            ${data}
         </div>
-        </div>
-      </div>
-        `);
+          `);
+        }
+        console.table(people);
     });
+
+    $(`#fav`).on('click', '.btn-remove', function () {
+      let index = $(this).parent().parent().parent().attr('number');
+      $(this).parent().parent().parent().remove();
+      people[index].favorite = false;
+      console.table(people);
+
+   });
+
+
 
 });
