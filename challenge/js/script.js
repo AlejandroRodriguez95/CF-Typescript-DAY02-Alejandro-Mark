@@ -18,7 +18,7 @@ var Profile = /** @class */ (function () {
 new Profile("Anna", "img/person0.jpg", "placeholder");
 new Profile("Anita", "img/person1.jpg", "placeholder");
 new Profile("Anota", "img/person2.jpg", "placeholder");
-new Profile("Girl4", "img/person3.jpg", "placeholder");
+new Profile("Anuta", "img/person3.jpg", "placeholder");
 new Profile("Guy1", "img/person4.jpg", "placeholder");
 new Profile("Guywithroses", "img/person5.jpg", "placeholder");
 $(document).ready(function () {
@@ -32,8 +32,8 @@ $(document).ready(function () {
         if (people[index].favorite == false) {
             people[index].favorite = true;
             var data = people[index].renderFav();
-            $("#fav").append("\n            <div class='text-white p-5 col-lg-3 wow bounceInDown' id=\"fav" + index + "\" number=\"" + index + "\">\n              " + data + "\n            </div>\n          ");
-            $("#swiper-fav").append("\n            <div class='text-white p-5 col-12 wow bounceInDown swiper-slide' id=\"fav" + index + "\" number=\"" + index + "\">\n              " + data + "\n            </div>\n          ");
+            $("#fav").append("\n            <div class='text-white p-5 col-lg-3 wow bounceInDown' number=\"" + index + "\">\n              " + data + "\n            </div>\n          ");
+            $("#swiper-fav").append("\n            <div class='text-white p-5 col-12 wow bounceInDown swiper-slide' number=\"" + index + "\">\n              " + data + "\n            </div>\n          ");
         }
     });
     $("#fav").on('click', '.btn-remove', function () {
