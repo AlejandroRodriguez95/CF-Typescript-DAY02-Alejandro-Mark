@@ -1,4 +1,5 @@
 var people = [];
+var initializated = false;
 class Profile {
     name: string;
     image: string;
@@ -9,6 +10,7 @@ class Profile {
         this.image = image;
         this.description = description;
         people.push(this);
+
     }
     render(){
       return  `
@@ -29,7 +31,7 @@ class Profile {
       <div class="text-center card-body">
         <h5 class="card-title">${this.name}</h5>
         <p class="card-text">${this.description}</p>
-        <a class="btn btn-remove bg-primary border-dark text-secondary btn-primary"> &#10006;</a>
+        <a class="btn btn-remove bg-dark border-dark text-secondary btn-primary"> &#10006;</a>
       </div>
       </div>`
     }
@@ -44,10 +46,18 @@ new Profile("Guywithroses", "img/person5.jpg", "placeholder");
 
 $(document).ready(function () {
 
+
+
     for (let x in people) {
       let data = people[x].render();
         $("#all").append(`
         <div class='p-5 col-lg-3' id="${x}">
+        ${data}
+      </div>
+      `);
+
+        $("#swiper").append(`
+        <div class='p-5 col-lg-12 swiper-slide' id="${x}">
         ${data}
       </div>
         `)
@@ -60,22 +70,82 @@ $(document).ready(function () {
           people[index].favorite = true;
           let data = people[index].renderFav();
           $("#fav").append(`
-          <div class='text-white p-5 col-lg-3' number="${index}">
+          <div class='text-white p-5 col-lg-3 wow bounceInDown' id="fav${index}" number="${index}">
             ${data}
         </div>
           `);
-        }
+          $("#swiper-fav").append(`
+          <div class='text-white p-5 col-12 wow bounceInDown swiper-slide' id="fav${index}" number="${index}">
+            ${data}
+        </div>
+          `);
+            console.log(initializated);
+            var mySwiper = new Swiper('.swiper-container', {
+              // Optional parameters
+              direction: 'horizontal',
+              loop: true,
+              observer: true,
+            
+              // If we need pagination
+              pagination: {
+                el: '.swiper-pagination',
+              },
+            
+              // Navigation arrows
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+            
+              // And if we need scrollbar
+              scrollbar: {
+                el: '.swiper-scrollbar',
+              },
+            })
+      }
         console.table(people);
     });
 
     $(`#fav`).on('click', '.btn-remove', function () {
       let index = $(this).parent().parent().parent().attr('number');
-      $(this).parent().parent().parent().remove();
-      people[index].favorite = false;
-      console.table(people);
-
+      var item = $(this).parent().parent().parent();
+      item.animate({
+        opacity: 0.0
+    }, 500, function() {
+        $(item).remove();
+        people[index].favorite = false;
+      });
    });
-
-
+   $(`#swiper-fav`).on('click', '.btn-remove', function () {
+    let index = $(this).parent().parent().parent().attr('number');
+    var item = $(this).parent().parent().parent();
+    item.animate({
+      opacity: 0.0
+  }, 500, function() {
+      $(item).remove();
+      people[index].favorite = false;
+    });
+ });
+   var mySwiper = new Swiper('.swiper-container', {
+    // Optional parameters
+    direction: 'horizontal',
+    loop: true,
+  
+    // If we need pagination
+    pagination: {
+      el: '.swiper-pagination',
+    },
+  
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  
+    // And if we need scrollbar
+    scrollbar: {
+      el: '.swiper-scrollbar',
+    },
+  })
 
 });
